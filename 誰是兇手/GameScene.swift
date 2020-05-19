@@ -18,10 +18,12 @@ class GameScene: SKScene {
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//Title_lb") as? SKLabelNode
+
         addStartBtn()
         addBgImage()
         addMurder()
     }
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          for touch in touches {
@@ -35,12 +37,28 @@ class GameScene: SKScene {
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         startBtn.alpha = 0.8
+        for touch in touches {
+             let location = touch.location(in: self)
+             let touchedNode = atPoint(location)
+             if touchedNode.name == "startBtn" {
+               if let scene = rolePick(fileNamed: "rolePick") {
+                    // Set the scale mode to scale to fit the window
+                    scene.scaleMode = .aspectFill
+                    
+                    let transition = SKTransition.moveIn(with: .right, duration: 0.5)
+                    self.view?.presentScene(scene, transition: transition)
+                }
+                
+
+             }
+        }
+      
     }
 
     func addBgImage(){
         let background = SKSpriteNode(imageNamed: "blood_bg")
         background.size = frame.size
-        background.alpha = 0.8
+        background.alpha = 0.5
         background.position = CGPoint(x: frame.midX, y: frame.midY)
         background.zPosition = -100
         addChild(background)
@@ -56,6 +74,7 @@ class GameScene: SKScene {
         startBtn.fontName = "AvenirNext-Bold"
         startBtn.zPosition = 0.9
         addChild(startBtn)
+        
        
     }
     

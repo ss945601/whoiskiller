@@ -17,6 +17,8 @@ class GameViewController: UIViewController {
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
+            let audio = JKAudioPlayer.sharedInstance()
+             audio.playMusic(fileName: "bgm", withExtension: "mp3")
             if let scene = GameScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
@@ -26,7 +28,6 @@ class GameViewController: UIViewController {
             }
             
             view.ignoresSiblingOrder = true
-            
             view.showsFPS = false
             view.showsNodeCount = false
         }
