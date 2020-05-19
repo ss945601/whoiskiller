@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5E6B00E62472805E00653DC0 /* 誰是殺手.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "誰是殺手.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E6B00E62472805E00653DC0 /* 誰是兇手.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "誰是兇手.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E6B00E92472805E00653DC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E6B00EB2472805E00653DC0 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		5E6B00ED2472805E00653DC0 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		5E6B00DD2472805E00653DC0 = {
 			isa = PBXGroup;
 			children = (
-				5E6B00E82472805E00653DC0 /* 誰是殺手 */,
+				5E6B00E82472805E00653DC0 /* 誰是兇手 */,
 				5E6B00E72472805E00653DC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,12 +52,12 @@
 		5E6B00E72472805E00653DC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E6B00E62472805E00653DC0 /* 誰是殺手.app */,
+				5E6B00E62472805E00653DC0 /* 誰是兇手.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5E6B00E82472805E00653DC0 /* 誰是殺手 */ = {
+		5E6B00E82472805E00653DC0 /* 誰是兇手 */ = {
 			isa = PBXGroup;
 			children = (
 				5E6B00E92472805E00653DC0 /* AppDelegate.swift */,
@@ -70,7 +70,7 @@
 				5E6B00F82472806200653DC0 /* LaunchScreen.storyboard */,
 				5E6B00FB2472806200653DC0 /* Info.plist */,
 			);
-			path = "誰是殺手";
+			path = "誰是兇手";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,7 +90,7 @@
 			);
 			name = "誰是殺手";
 			productName = "誰是殺手";
-			productReference = 5E6B00E62472805E00653DC0 /* 誰是殺手.app */;
+			productReference = 5E6B00E62472805E00653DC0 /* 誰是兇手.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5E6B00E12472805E00653DC0 /* Build configuration list for PBXProject "誰是殺手" */;
+			buildConfigurationList = 5E6B00E12472805E00653DC0 /* Build configuration list for PBXProject "誰是兇手" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -300,7 +300,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.asher.cmp.----";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "誰是兇手";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -318,7 +318,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.asher.cmp.----";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "誰是兇手";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -327,7 +327,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5E6B00E12472805E00653DC0 /* Build configuration list for PBXProject "誰是殺手" */ = {
+		5E6B00E12472805E00653DC0 /* Build configuration list for PBXProject "誰是兇手" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E6B00FC2472806200653DC0 /* Debug */,
