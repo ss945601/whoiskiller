@@ -8,17 +8,122 @@
 
 import SpriteKit
 import GameplayKit
+import WebKit
 
-class templateSKScene: SKScene {
+public struct Queue<T> {
+    fileprivate var array = [T]()
+    public var isEmpty: Bool {
+        return array.isEmpty
+    }
+    public var count: Int {
+        return array.count
+    }
+    public mutating func enqueue(_ element: T) {
+        array.append(element)
+    }
+    public mutating func dequeue() -> T? {
+        if isEmpty {
+           return nil
+        } else {
+           return array.removeFirst()
+        }
+     }
+    public var front: T? {
+        return array.first
+    }
+}
+
+extension SKLabelNode {
+  func multilined() -> SKLabelNode {
+    let substrings: [String] = self.text!.components(separatedBy: "\n")
+    return substrings.enumerated().reduce(SKLabelNode()) {
+      let label = SKLabelNode(fontNamed: self.fontName)
+      label.text = $1.element
+      label.fontColor = self.fontColor
+      label.fontSize = self.fontSize
+      label.position = self.position
+      label.horizontalAlignmentMode = self.horizontalAlignmentMode
+      label.verticalAlignmentMode = self.verticalAlignmentMode
+        let y = CGFloat($1.offset - substrings.count / 2) * self.fontSize*1.62
+      label.position = CGPoint(x: 0, y: -y)
+      $0.addChild(label)
+      return $0
+    }
+  }
+}
+
+
+extension templateSKScene: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        let msg = message.body as! String
+        processBuffer.enqueue(msg)
+        if msg.contains("人數"){
+            let num = String(msg.split(separator: ":")[1])
+            member = Int(num)!
+            if member > 4 {
+                sendLogout()
+                member = 4
+            }
+            events.trigger(eventName: "member")
+        }
+        if (member == 4){
+            events.trigger(eventName: "isLoadDone")
+        }
+        print(msg)
+    }
+}
+
+class templateSKScene: SKScene,WKNavigationDelegate {
+    
+    var webView = WKWebView()
+    var isLoadDone = false
+    var processBuffer = Queue<String>()
+    let events = EventManager();
+    var member = 0
+    
     func addTemplate(){
         addGoBackBtn()
         addGoNextBtn()
         addBgImage()
     }
     
+    func addSocket(){
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = WKUserContentController()
+        configuration.userContentController.add(self, name: "ToApp")
+        self.webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.navigationDelegate = self
+        let url = URL(string: "https://whoiskiller.herokuapp.com/")!
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+    
+    func sendCmd(msg:String){
+        webView.evaluateJavaScript("sendCmd('"+msg+"')", completionHandler: { (value,error)in
+            print(value as Any)
+        })
+    }
+    
+    func sendLogin(){
+        webView.evaluateJavaScript("sendLogin()", completionHandler: { (value,error)in
+            print(value as Any)
+        })
+    }
+    
+    func sendLogout(){
+        webView.evaluateJavaScript("sendLogout()", completionHandler: { (value,error)in
+            print(value as Any)
+        })
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        isLoadDone = true
+        sendCmd(msg: UIDevice.current.name + "加入遊戲")
+        sendLogin()
+    }
     
     func addGoBackBtn(){
-       var goBackBtn = SKSpriteNode(imageNamed: "goBack")
+       let goBackBtn = SKSpriteNode(imageNamed: "goBack")
        goBackBtn.position = CGPoint(x: self.frame.minX+100, y: self.frame.maxY-50)
        goBackBtn.size = CGSize(width: goBackBtn.size.width/1.5,height: goBackBtn.size.height/1.5)
        goBackBtn.name = "goBack"
@@ -26,7 +131,7 @@ class templateSKScene: SKScene {
    }
    
    func addGoNextBtn(){
-       var goNextBtn = SKSpriteNode(imageNamed: "goNext")
+       let goNextBtn = SKSpriteNode(imageNamed: "goNext")
        goNextBtn.position = CGPoint(x: self.frame.maxX-100, y: self.frame.maxY-50)
        goNextBtn.size = CGSize(width: goNextBtn.size.width/1.5,height: goNextBtn.size.height/1.5)
        goNextBtn.name = "goNext"
@@ -42,4 +147,9 @@ class templateSKScene: SKScene {
        background.zPosition = -100
        addChild(background)
    }
+    
+    func playSound(file:String){
+        let sound = SKAction.playSoundFileNamed(file, waitForCompletion: false)
+        run(sound)
+    }
 }

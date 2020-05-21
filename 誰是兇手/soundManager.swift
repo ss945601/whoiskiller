@@ -53,8 +53,8 @@ import AVFoundation
         }
     }
 
-    public func playSound(fileName: String) -> SKAction? {
-        return SKAction.playSoundFileNamed(fileName, waitForCompletion: false)
-    }
+//    public func playSound(fileName: String) -> SKAction? {
+//        return SKAction.playSoundFileNamed(fileName, waitForCompletion: false)
+//    }
 }
 

@@ -10,7 +10,8 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
-class GameViewController: UIViewController {
+
+class GameViewController: sockectWeb {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +19,7 @@ class GameViewController: UIViewController {
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             let audio = JKAudioPlayer.sharedInstance()
-             audio.playMusic(fileName: "bgm", withExtension: "mp3")
+            audio.playMusic(fileName: "bgm", withExtension: "mp3")
             if let scene = GameScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
@@ -27,12 +28,19 @@ class GameViewController: UIViewController {
                 view.presentScene(scene)
             }
             
+            
             view.ignoresSiblingOrder = true
             view.showsFPS = false
             view.showsNodeCount = false
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+         sendLogout()
+    }
+    
 
+    
     override var shouldAutorotate: Bool {
         return true
     }
