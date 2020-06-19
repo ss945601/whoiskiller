@@ -14,7 +14,7 @@ import GameplayKit
 class rolePick: templateSKScene {
     private var secondScene = SKSpriteNode()
     private var label : SKLabelNode?
-    private var roles = ["多金","多音","多地","多膜"]
+    private var roles = ["錢貞多","吳昭音","田芊平","艾貼摩"]
     private var playerName : [String: String] = [:]
     private var storyNote = SKSpriteNode(imageNamed: "note")
    

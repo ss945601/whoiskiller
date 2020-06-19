@@ -68,6 +68,9 @@ extension templateSKScene: WKScriptMessageHandler {
                 playersName.append(String(name))
             }
         }
+        if msg.contains("getPlayerAlive"){
+            sendCmd(msg: UIDevice.current.name + "加入遊戲")
+        }
         if (member == limit_player){
             events.trigger(eventName: "isLoadDone")
         }
@@ -120,8 +123,7 @@ class templateSKScene: SKScene,WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         isLoadDone = true
         sendCmd(msg: UIDevice.current.name + "加入遊戲")
-        
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getClientsNum), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getClientsNum), userInfo: nil, repeats: true)
     }
     
     func addGoBackBtn(){

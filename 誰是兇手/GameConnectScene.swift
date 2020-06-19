@@ -19,6 +19,7 @@ class GameConnectScene: templateSKScene {
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//Title_lb") as? SKLabelNode
+        var askTimer =         Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(askAliveConnent), userInfo: nil, repeats: true)
         addSocket()
         addStartBtn()
         addBgImage()
@@ -58,6 +59,14 @@ class GameConnectScene: templateSKScene {
       
     }
 
+    @objc func askAliveConnent(){
+        if (member != playersName.count) {
+            if (member >= 1) {
+                playersName.removeAll()
+            }
+            sendCmd(msg: "[CMD]getPlayerAlive")
+        }
+    }
     
     func updateMember(){
         var hintStr = "人數："+String(member)+"/"+String(limit_player)
@@ -101,14 +110,14 @@ class GameConnectScene: templateSKScene {
         let murder = SKSpriteNode(imageNamed: "murder")
         murder.size = CGSize(width: frame.size.width/2.5,height: frame.size.width/2.5)
         murder.alpha = 1
-        murder.position = CGPoint(x: frame.minX+200, y: frame.maxY-1150)
+        murder.position = CGPoint(x: frame.minX+100, y: frame.maxY-1150)
         murder.zPosition = 0
         addChild(murder)
     }
     
     func initHintBoard(hintStr:String){
         hintBoard.alpha = 1
-        hintBoard.size = CGSize(width: hintBoard.size.width/1.2,height: hintBoard.size.width*1.2)
+        hintBoard.size = CGSize(width: hintBoard.size.width/11,height: hintBoard.size.width/11)
         hintBoard.atPoint(self.view!.center)
         hintBoard.zPosition = 0
         addChild(hintBoard)
