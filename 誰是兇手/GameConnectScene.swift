@@ -9,11 +9,12 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: templateSKScene {
+class GameConnectScene: templateSKScene {
     
     private var label : SKLabelNode?
     private var startBtn = SKLabelNode(text: "連線")
     private var hintTxt : SKLabelNode?
+    private var hintBoard = SKSpriteNode(imageNamed: "hintBoard")
     override func didMove(to view: SKView) {
         
         // Get label node from scene and store it for use later
@@ -22,7 +23,7 @@ class GameScene: templateSKScene {
         addStartBtn()
         addBgImage()
         addMurder()
-        addHintBoard(hintStr: "人數："+"0/4")
+        initHintBoard(hintStr: "人數："+"0/" + String(limit_player))
         events.listenTo(eventName: "isLoadDone", action: enableStartBtn)
         events.listenTo(eventName: "member", action: updateMember)
     }
@@ -59,7 +60,21 @@ class GameScene: templateSKScene {
 
     
     func updateMember(){
-        hintTxt?.text = "人數："+String(member)+"/4"
+        var hintStr = "人數："+String(member)+"/"+String(limit_player)
+        for name in playersName {
+            hintStr = hintStr + "\n" + name
+        }
+        updateHint(hintStr: hintStr)
+        if member == limit_player {
+            startBtn.name = "startBtn"
+            startBtn.text = "開始"
+            startBtn.fontColor = UIColor.red
+        }
+        else {
+            startBtn.name = "waitlink"
+            startBtn.text = "連線"
+            startBtn.fontColor = UIColor.gray
+        }
     }
     
     func addStartBtn(){
@@ -67,7 +82,7 @@ class GameScene: templateSKScene {
         startBtn.fontColor = UIColor.gray
         startBtn.fontSize = 140
         startBtn.alpha = 0.8
-        startBtn.position = CGPoint(x: frame.minX+400, y: frame.maxY-1050)
+        startBtn.position = CGPoint(x: frame.minX+400, y: frame.maxY-1200)
         startBtn.fontName = "AvenirNext-Bold"
         startBtn.zPosition = 0.9
         addChild(startBtn)
@@ -86,26 +101,31 @@ class GameScene: templateSKScene {
         let murder = SKSpriteNode(imageNamed: "murder")
         murder.size = CGSize(width: frame.size.width/2.5,height: frame.size.width/2.5)
         murder.alpha = 1
-        murder.position = CGPoint(x: frame.minX+200, y: frame.maxY-1000)
+        murder.position = CGPoint(x: frame.minX+200, y: frame.maxY-1150)
         murder.zPosition = 0
         addChild(murder)
     }
     
-    func addHintBoard(hintStr:String){
-        let hintBoard = SKSpriteNode(imageNamed: "hintBoard")
+    func initHintBoard(hintStr:String){
         hintBoard.alpha = 1
-        hintBoard.size = CGSize(width: hintBoard.size.width/1.2,height: hintBoard.size.width/1.2)
+        hintBoard.size = CGSize(width: hintBoard.size.width/1.2,height: hintBoard.size.width*1.2)
         hintBoard.atPoint(self.view!.center)
         hintBoard.zPosition = 0
         addChild(hintBoard)
-        hintTxt = SKLabelNode(text: hintStr)
-        hintTxt?.zPosition = 3
-        hintTxt?.name = "member"
-        hintTxt?.fontColor = UIColor.black
-        hintTxt?.fontSize = 50
-        hintTxt?.fontName = "AvenirNext"
-        hintBoard.addChild(hintTxt!)
+        updateHint(hintStr: hintStr)
     }
     
-    
+    func updateHint(hintStr:String){
+        if (hintTxt != nil){
+            hintTxt?.removeFromParent()
+        }
+        hintTxt = SKLabelNode(text: hintStr)
+        hintTxt?.name = "member"
+        hintTxt?.fontColor = UIColor.black
+        hintTxt?.fontSize = 40
+        hintTxt?.fontName = "AvenirNext-Bold"
+        hintTxt = hintTxt?.multilined()
+        hintBoard.addChild(hintTxt!)
+        hintTxt?.zPosition = 5
+    }
 }

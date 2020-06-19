@@ -11,7 +11,7 @@ import SpriteKit
 import GameplayKit
 
 
-class GameViewController: sockectWeb {
+class GameSettingVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +20,7 @@ class GameViewController: sockectWeb {
             // Load the SKScene from 'GameScene.sks'
             let audio = JKAudioPlayer.sharedInstance()
             audio.playMusic(fileName: "bgm", withExtension: "mp3")
-            if let scene = GameScene(fileNamed: "GameScene") {
+            if let scene = GameConnectScene(fileNamed: "GameConnectScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 
@@ -33,10 +33,6 @@ class GameViewController: sockectWeb {
             view.showsFPS = false
             view.showsNodeCount = false
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-         sendLogout()
     }
     
 

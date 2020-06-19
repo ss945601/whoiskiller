@@ -69,14 +69,6 @@ class rolePick: templateSKScene {
             let nodesarray = nodes(at: location)
             
             for node in nodesarray {
-                if node.name == "goBack" {
-                    let firstScene = GameScene(fileNamed: "GameScene")
-                    let transition = SKTransition.doorsCloseHorizontal(withDuration: 0.5)
-                    firstScene?.scaleMode = .aspectFill
-                    scene?.view?.presentScene(firstScene!, transition: transition)
-                    playSound(file: "flip.mp3")
-                 }
-
                 for r in roles{
                     if node.name == r && secondScene.children.count == 0 && node.children.first?.alpha != 1{
                         node.alpha = 0.5
@@ -116,7 +108,7 @@ class rolePick: templateSKScene {
         content.zPosition = 6
         content.fontColor = UIColor.black
         content.fontSize = content.fontSize * 1.2
-        content.fontName = "AvenirNext"
+        content.fontName = "AvenirNext-Bold"
         let message = content.multilined()
         message.zPosition = 6
         storyNote.addChild(cancelBtn)

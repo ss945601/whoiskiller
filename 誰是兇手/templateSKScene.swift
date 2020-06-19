@@ -56,19 +56,22 @@ extension SKLabelNode {
 extension templateSKScene: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let msg = message.body as! String
-        processBuffer.enqueue(msg)
+        //processBuffer.enqueue(msg)
         if msg.contains("人數"){
             let num = String(msg.split(separator: ":")[1])
             member = Int(num)!
-            if member > 4 {
-                sendLogout()
-                member = 4
-            }
             events.trigger(eventName: "member")
         }
-        if (member == 4){
+        if msg.contains("加入遊戲"){
+            var name = msg.split(separator: "加")[0]
+            if !playersName.contains(String(name)) {
+                playersName.append(String(name))
+            }
+        }
+        if (member == limit_player){
             events.trigger(eventName: "isLoadDone")
         }
+        
         print(msg)
     }
 }
@@ -78,11 +81,14 @@ class templateSKScene: SKScene,WKNavigationDelegate {
     var webView = WKWebView()
     var isLoadDone = false
     var processBuffer = Queue<String>()
+    var playersName = Array<String>()
     let events = EventManager();
     var member = 0
-    
+    var timer = Timer()
+
+    let limit_player = 2
+
     func addTemplate(){
-        addGoBackBtn()
         addGoNextBtn()
         addBgImage()
     }
@@ -104,22 +110,18 @@ class templateSKScene: SKScene,WKNavigationDelegate {
         })
     }
     
-    func sendLogin(){
-        webView.evaluateJavaScript("sendLogin()", completionHandler: { (value,error)in
+    @objc func getClientsNum(){
+        webView.evaluateJavaScript("getClientsNum()", completionHandler: { (value,error)in
             print(value as Any)
         })
     }
     
-    func sendLogout(){
-        webView.evaluateJavaScript("sendLogout()", completionHandler: { (value,error)in
-            print(value as Any)
-        })
-    }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         isLoadDone = true
         sendCmd(msg: UIDevice.current.name + "加入遊戲")
-        sendLogin()
+        
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(getClientsNum), userInfo: nil, repeats: true)
     }
     
     func addGoBackBtn(){
@@ -147,6 +149,7 @@ class templateSKScene: SKScene,WKNavigationDelegate {
        background.zPosition = -100
        addChild(background)
    }
+    
     
     func playSound(file:String){
         let sound = SKAction.playSoundFileNamed(file, waitForCompletion: false)
