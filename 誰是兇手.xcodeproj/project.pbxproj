@@ -27,6 +27,10 @@
 		5EBC16B3249DBC9A004CE47E /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBC16B2249DBC9A004CE47E /* config.swift */; };
 		5EBC16B5249DBE30004CE47E /* roleSex.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EBC16B4249DBE30004CE47E /* roleSex.strings */; };
 		5EBC16B7249DCCBA004CE47E /* shareParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBC16B6249DCCBA004CE47E /* shareParam.swift */; };
+		5EBC16BC249DE9AF004CE47E /* Genkaimincho.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EBC16BB249DE9A9004CE47E /* Genkaimincho.ttf */; };
+		5EBC16C0249DEFA1004CE47E /* cute.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EBC16BF249DEFA1004CE47E /* cute.ttf */; };
+		5EBC16C2249DF0A9004CE47E /* SetoFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EBC16C1249DF0A9004CE47E /* SetoFont.ttf */; };
+		5EBC16C4249DF56C004CE47E /* cmdProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBC16C3249DF56C004CE47E /* cmdProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +56,10 @@
 		5EBC16B2249DBC9A004CE47E /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		5EBC16B4249DBE30004CE47E /* roleSex.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = roleSex.strings; sourceTree = "<group>"; };
 		5EBC16B6249DCCBA004CE47E /* shareParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shareParam.swift; sourceTree = "<group>"; };
+		5EBC16BB249DE9A9004CE47E /* Genkaimincho.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Genkaimincho.ttf; sourceTree = "<group>"; };
+		5EBC16BF249DEFA1004CE47E /* cute.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = cute.ttf; sourceTree = "<group>"; };
+		5EBC16C1249DF0A9004CE47E /* SetoFont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SetoFont.ttf; sourceTree = "<group>"; };
+		5EBC16C3249DF56C004CE47E /* cmdProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cmdProcessor.swift; sourceTree = "<group>"; };
 		77435A233DD45F7BA044462D /* Pods-誰是兇手.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-誰是兇手.release.xcconfig"; path = "Target Support Files/Pods-誰是兇手/Pods-誰是兇手.release.xcconfig"; sourceTree = "<group>"; };
 		C015F9ECCC21C54502EA5CA1 /* Pods-誰是兇手.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-誰是兇手.debug.xcconfig"; path = "Target Support Files/Pods-誰是兇手/Pods-誰是兇手.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +123,7 @@
 				5EB4CDF42476191E0013D198 /* Events.swift */,
 				5EBC16B2249DBC9A004CE47E /* config.swift */,
 				5EBC16B6249DCCBA004CE47E /* shareParam.swift */,
+				5EBC16C3249DF56C004CE47E /* cmdProcessor.swift */,
 			);
 			path = "誰是兇手";
 			sourceTree = "<group>";
@@ -122,6 +131,7 @@
 		5EB739162473B5190047B7BE /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				5EBC16BA249DE968004CE47E /* font */,
 				5EB7391C2473D6710047B7BE /* click.mp3 */,
 				5EB7391B2473D6710047B7BE /* flip.mp3 */,
 				5EB739172473B52B0047B7BE /* bgm.mp3 */,
@@ -136,6 +146,16 @@
 				5EBC16B4249DBE30004CE47E /* roleSex.strings */,
 			);
 			name = roleScript;
+			sourceTree = "<group>";
+		};
+		5EBC16BA249DE968004CE47E /* font */ = {
+			isa = PBXGroup;
+			children = (
+				5EBC16BF249DEFA1004CE47E /* cute.ttf */,
+				5EBC16C1249DF0A9004CE47E /* SetoFont.ttf */,
+				5EBC16BB249DE9A9004CE47E /* Genkaimincho.ttf */,
+			);
+			name = font;
 			sourceTree = "<group>";
 		};
 		8F60C0AD4A213CEF5A30922E /* Frameworks */ = {
@@ -206,15 +226,18 @@
 			files = (
 				5EB7391E2473D6710047B7BE /* click.mp3 in Resources */,
 				5EB7390E2473766F0047B7BE /* rolePick.sks in Resources */,
+				5EBC16C2249DF0A9004CE47E /* SetoFont.ttf in Resources */,
 				5EBC16B5249DBE30004CE47E /* roleSex.strings in Resources */,
 				5EB7391D2473D6710047B7BE /* flip.mp3 in Resources */,
 				5E6B00F52472805E00653DC0 /* Main.storyboard in Resources */,
 				5EB739222473E8A60047B7BE /* roleIntroduction.strings in Resources */,
+				5EBC16C0249DEFA1004CE47E /* cute.ttf in Resources */,
 				5E6B00EC2472805E00653DC0 /* GameConnectScene.sks in Resources */,
 				5E6B00F72472806200653DC0 /* Assets.xcassets in Resources */,
 				5E6B00FA2472806200653DC0 /* LaunchScreen.storyboard in Resources */,
 				5E6B00EE2472805E00653DC0 /* Actions.sks in Resources */,
 				5EB739182473B52C0047B7BE /* bgm.mp3 in Resources */,
+				5EBC16BC249DE9AF004CE47E /* Genkaimincho.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +280,7 @@
 				5EB4CDF52476191E0013D198 /* Events.swift in Sources */,
 				5EBC16B7249DCCBA004CE47E /* shareParam.swift in Sources */,
 				5EBC16B3249DBC9A004CE47E /* config.swift in Sources */,
+				5EBC16C4249DF56C004CE47E /* cmdProcessor.swift in Sources */,
 				5E6B00EA2472805E00653DC0 /* AppDelegate.swift in Sources */,
 				5EB7391A2473B71A0047B7BE /* soundManager.swift in Sources */,
 			);

@@ -53,52 +53,11 @@ extension SKLabelNode {
 }
 
 
-extension templateSKScene: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        var msg = message.body as! String
-        processCommand(cmd: msg)
-    }
-    
-    func processCommand(cmd:String){
-        print(cmd)
-        var msg = ""
-        if cmd.contains("[CMD]"){
-            msg = String(cmd.split(separator: "]")[1])
-        }
-        else {
-            msg = cmd
-        }
-        if msg.contains("人數"){ // 取得連線人數
-            let num = String(msg.split(separator: ":")[1])
-            member = Int(num)!
-            events.trigger(eventName: "member")
-            print(status)
-            if status != "gameConnect" && member < limit_player{ // 突然斷線 回連線頁面
-                events.trigger(eventName: "startToWaitConnect")
-            }
-        }
-        if msg.contains("加入遊戲"){ // ID 確認加入
-            var name = msg.split(separator: "加")[0]
-            if !playersID.contains(String(name)) {
-                playersID.append(String(name))
-            }
-        }
-        if msg.contains("getPlayerAlive"){ // 回應ID是否連線中
-            sendCmd(msg: UIDevice.current.name + "加入遊戲")
-        }
-        if msg.contains("startToRolePick"){ // 非房主等待房主指令跳頁
-            if (!isMaster) {
-                events.trigger(eventName: "startToRolePick")
-            }
-        }
-    }
-}
-
 class templateSKScene: SKScene,WKNavigationDelegate {
     
     static var webView = WKWebView()
     var processBuffer = Queue<String>()
-    let events = EventManager();
+
     var timer = Timer()
     
     let limit_player = LIMIT_PLAYER_NUM

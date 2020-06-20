@@ -104,7 +104,7 @@ class GameConnectScene: templateSKScene {
         startBtn.fontSize = 140
         startBtn.alpha = 0.8
         startBtn.position = CGPoint(x: frame.minX+400, y: frame.maxY-1200)
-        startBtn.fontName = "AvenirNext-Bold"
+        startBtn.fontName = "Genkaimincho"
         startBtn.zPosition = 0.9
         addChild(startBtn)
        
@@ -117,6 +117,8 @@ class GameConnectScene: templateSKScene {
             }
             else{
                 isMaster = false
+                let audio = JKAudioPlayer.sharedInstance()
+                audio.stopMusic()
             }
         }
         if member == limit_player && member == playersID.count && isMaster{
@@ -163,8 +165,8 @@ class GameConnectScene: templateSKScene {
         hintTxt = SKLabelNode(text: hintStr)
         hintTxt?.name = "member"
         hintTxt?.fontColor = UIColor.black
-        hintTxt?.fontSize = 40
-        hintTxt?.fontName = "AvenirNext-Bold"
+        hintTxt?.fontSize = 45
+        hintTxt?.fontName = "SetoFont"
         hintTxt = hintTxt?.multilined()
         hintBoard.addChild(hintTxt!)
         hintTxt?.zPosition = 5

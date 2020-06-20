@@ -14,8 +14,7 @@ import GameplayKit
 class rolePick: templateSKScene {
     private var secondScene = SKSpriteNode()
     private var label : SKLabelNode?
-    private var roles = ["錢貞多","吳昭音","田芊平","艾貼摩"]
-    private var playerID_Name : [String: String] = [:]
+    private var roles = ["錢貞多","吳昭音","房芊萍","艾貼摩"]
     private var storyNote = SKSpriteNode(imageNamed: "note")
     var isPickRole = false
     var isYourTurn = false
@@ -27,7 +26,7 @@ class rolePick: templateSKScene {
         self.label = self.childNode(withName: "//Title_role_lb") as? SKLabelNode
         addTemplate()
         addRoleBtn()
-
+        events.listenTo(eventName: "selectByOtherPlayer", action: selectByOtherPlayer)
     }
     
     func addRoleBtn(){
@@ -35,9 +34,9 @@ class rolePick: templateSKScene {
         if let url = Bundle.main.url(forResource: "roleSex", withExtension: "strings"),
             let sex = NSDictionary(contentsOf: url) as? [String: String] {
             addRoleWithName(name: roles[0]+sex[String(roles[0])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-500) )
-            addRoleWithName(name: roles[1]+sex[String(roles[1])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-700) )
-            addRoleWithName(name: roles[2]+sex[String(roles[2])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-900) )
-            addRoleWithName(name: roles[3]+sex[String(roles[3])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-1100) )
+            addRoleWithName(name: roles[1]+sex[String(roles[1])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-720) )
+            addRoleWithName(name: roles[2]+sex[String(roles[2])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-940) )
+            addRoleWithName(name: roles[3]+sex[String(roles[3])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-1160) )
         }
         
     }
@@ -56,7 +55,7 @@ class rolePick: templateSKScene {
         role.fontSize = 60
         role.alpha = 0.8
         role.position = pos
-        role.fontName = "AvenirNext-Bold"
+        role.fontName = "SetoFont"
         role.zPosition = 2
         addChild(role)
         let mark = SKSpriteNode(imageNamed: "knifeMark")
@@ -66,7 +65,32 @@ class rolePick: templateSKScene {
         
     }
     
-    
+    func selectByOtherPlayer(information:Any?){
+        let idx =  Int((information as! String).split(separator: "_")[0])
+        let role =  String((information as! String).split(separator: "_")[1])
+        for node in children {
+            if node.name == role {
+                node.alpha = 0.5
+                node.children.first?.alpha = 0.8
+                let player = SKLabelNode(text: playersID[idx!])
+                player.fontColor = UIColor.white
+                player.fontSize = 60
+                player.alpha = 0
+                player.fontName = "SetoFont"
+                player.zPosition = 3
+                node.addChild(player)
+                player.position = CGPoint(x: player.position.x,y: player.position.y-70)
+                player.alpha = 1
+            }
+        }
+        if idx!+1 < playersID.count {
+            if playersID[idx!+1] == UIDevice.current.name{
+                isYourTurn = true
+            }
+        }
+        
+       
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
@@ -80,7 +104,7 @@ class rolePick: templateSKScene {
                     for r in roles{
                         if node.name == r && secondScene.children.count == 0 && node.children.first?.alpha != 1{
                             node.alpha = 0.5
-                            node.children.first?.alpha = 1
+                            node.children.first?.alpha = 0.8
                             playSound(file: "click.mp3")
                             showStory(role: r)
                             playerID_Name[UIDevice.current.name] = r
@@ -103,6 +127,7 @@ class rolePick: templateSKScene {
         }
     }
     
+    
     func showStory(role:String){
         if storyNote.name == nil {
             storyNote.name = "note"
@@ -124,7 +149,7 @@ class rolePick: templateSKScene {
         content.zPosition = 6
         content.fontColor = UIColor.black
         content.fontSize = content.fontSize * 1.2
-        content.fontName = "AvenirNext-Bold"
+        content.fontName = "SetoFont"
         let message = content.multilined()
         message.zPosition = 6
         storyNote.addChild(cancelBtn)

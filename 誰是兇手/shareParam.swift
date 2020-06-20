@@ -8,11 +8,12 @@
 
 import Foundation
 import WebKit
+let events = EventManager();
 var isMaster = false; // 是不是房主
 var status = "" // 遊戲目前狀態
 var member = 0 // 連線人數
 var playersID = Array<String>() // 連線手機名稱
-
+var playerID_Name : [String: String] = [:]
 class shareParam {
     static func getIndexByName(pid:String)->Int{
         var idx = 0
