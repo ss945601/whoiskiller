@@ -12,21 +12,24 @@ import GameplayKit
 class GameConnectScene: templateSKScene {
     
     private var label : SKLabelNode?
-    private var startBtn = SKLabelNode(text: "連線")
+    private var startBtn = SKLabelNode(text: "連線...")
     private var hintTxt : SKLabelNode?
     private var hintBoard = SKSpriteNode(imageNamed: "hintBoard")
+    var askTimer = Timer()
     override func didMove(to view: SKView) {
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//Title_lb") as? SKLabelNode
-        var askTimer =         Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(askAliveConnent), userInfo: nil, repeats: true)
+        status = "gameConnect"
+        askTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(askAliveConnent), userInfo: nil, repeats: true)
         addSocket()
         addStartBtn()
         addBgImage()
         addMurder()
         initHintBoard(hintStr: "人數："+"0/" + String(limit_player))
-        events.listenTo(eventName: "isLoadDone", action: enableStartBtn)
         events.listenTo(eventName: "member", action: updateMember)
+        events.listenTo(eventName: "startToRolePick", action: startToRolePick)
+
     }
      
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -34,7 +37,7 @@ class GameConnectScene: templateSKScene {
          for touch in touches {
               let location = touch.location(in: self)
               let touchedNode = atPoint(location)
-              if touchedNode.name == "startBtn" && member == 4 {
+              if touchedNode.name == "startBtn" {
                 touchedNode.alpha = 0.5
                 playSound(file: "flip.mp3")
                 // Call the function here.
@@ -47,43 +50,52 @@ class GameConnectScene: templateSKScene {
              let location = touch.location(in: self)
              let touchedNode = atPoint(location)
              if touchedNode.name == "startBtn" {
-               if let scene = rolePick(fileNamed: "rolePick") {
-                    // Set the scale mode to scale to fit the window
-                    scene.scaleMode = .aspectFill
+                if (isMaster){
                     
-                    let transition = SKTransition.moveIn(with: .right, duration: 0.5)
-                    self.view?.presentScene(scene, transition: transition)
+                    sendCmd(msg: "startToRolePick")
+                    startToRolePick()
                 }
              }
         }
       
     }
 
+    func startToRolePick(){
+        if let scene = rolePick(fileNamed: "rolePick") {
+            // Set the scale mode to scale to fit the window
+            scene.scaleMode = .aspectFill
+            status = "rolePick"
+            let transition = SKTransition.moveIn(with: .right, duration: 0.5)
+            self.view?.presentScene(scene, transition: transition)
+        }
+    }
+    
+    
     @objc func askAliveConnent(){
-        if (member != playersName.count) {
+        if (member != playersID.count) {
             if (member >= 1) {
-                playersName.removeAll()
+                playersID.removeAll()
             }
-            sendCmd(msg: "[CMD]getPlayerAlive")
+            sendCmd(msg: "getPlayerAlive")
         }
     }
     
     func updateMember(){
+        if playersID.count == 0 || playersID.count != member{
+            return;
+        }
         var hintStr = "人數："+String(member)+"/"+String(limit_player)
-        for name in playersName {
-            hintStr = hintStr + "\n" + name
+        playersID.sort()
+        for name in playersID {
+            if name == playersID[0] {
+                hintStr = hintStr + "\n" + name + "[房主]"
+            }
+            else {
+                hintStr = hintStr + "\n" + name + " [OK]"
+            }
         }
         updateHint(hintStr: hintStr)
-        if member == limit_player {
-            startBtn.name = "startBtn"
-            startBtn.text = "開始"
-            startBtn.fontColor = UIColor.red
-        }
-        else {
-            startBtn.name = "waitlink"
-            startBtn.text = "連線"
-            startBtn.fontColor = UIColor.gray
-        }
+        enableStartBtn()
     }
     
     func addStartBtn(){
@@ -99,9 +111,29 @@ class GameConnectScene: templateSKScene {
     }
     
     func enableStartBtn(){
-        startBtn.name = "startBtn"
-        startBtn.text = "開始"
-        startBtn.fontColor = UIColor.red
+        if (playersID.count > 0) {
+            if playersID[0] == UIDevice.current.name {
+                isMaster = true
+            }
+            else{
+                isMaster = false
+            }
+        }
+        if member == limit_player && member == playersID.count && isMaster{
+            startBtn.name = "startBtn"
+            startBtn.text = "開始"
+            startBtn.fontColor = UIColor.red
+        }
+        else if member > 0{
+            startBtn.name = "prepare"
+            startBtn.text = "準備"
+            startBtn.fontColor = UIColor.green
+        }
+        else if member == 0 {
+            startBtn.name = "waitlink"
+            startBtn.text = "連線..."
+            startBtn.fontColor = UIColor.gray
+        }
     }
     
     

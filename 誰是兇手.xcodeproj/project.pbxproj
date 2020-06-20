@@ -24,6 +24,9 @@
 		5EB7391D2473D6710047B7BE /* flip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5EB7391B2473D6710047B7BE /* flip.mp3 */; };
 		5EB7391E2473D6710047B7BE /* click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5EB7391C2473D6710047B7BE /* click.mp3 */; };
 		5EB739222473E8A60047B7BE /* roleIntroduction.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EB739212473E8A60047B7BE /* roleIntroduction.strings */; };
+		5EBC16B3249DBC9A004CE47E /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBC16B2249DBC9A004CE47E /* config.swift */; };
+		5EBC16B5249DBE30004CE47E /* roleSex.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EBC16B4249DBE30004CE47E /* roleSex.strings */; };
+		5EBC16B7249DCCBA004CE47E /* shareParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBC16B6249DCCBA004CE47E /* shareParam.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +49,9 @@
 		5EB7391B2473D6710047B7BE /* flip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flip.mp3; sourceTree = "<group>"; };
 		5EB7391C2473D6710047B7BE /* click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = click.mp3; sourceTree = "<group>"; };
 		5EB739212473E8A60047B7BE /* roleIntroduction.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = roleIntroduction.strings; sourceTree = "<group>"; };
+		5EBC16B2249DBC9A004CE47E /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
+		5EBC16B4249DBE30004CE47E /* roleSex.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = roleSex.strings; sourceTree = "<group>"; };
+		5EBC16B6249DCCBA004CE47E /* shareParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shareParam.swift; sourceTree = "<group>"; };
 		77435A233DD45F7BA044462D /* Pods-誰是兇手.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-誰是兇手.release.xcconfig"; path = "Target Support Files/Pods-誰是兇手/Pods-誰是兇手.release.xcconfig"; sourceTree = "<group>"; };
 		C015F9ECCC21C54502EA5CA1 /* Pods-誰是兇手.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-誰是兇手.debug.xcconfig"; path = "Target Support Files/Pods-誰是兇手/Pods-誰是兇手.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +113,8 @@
 				5EB73911247385400047B7BE /* templateSKScene.swift */,
 				5EB739192473B71A0047B7BE /* soundManager.swift */,
 				5EB4CDF42476191E0013D198 /* Events.swift */,
+				5EBC16B2249DBC9A004CE47E /* config.swift */,
+				5EBC16B6249DCCBA004CE47E /* shareParam.swift */,
 			);
 			path = "誰是兇手";
 			sourceTree = "<group>";
@@ -125,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				5EB739212473E8A60047B7BE /* roleIntroduction.strings */,
+				5EBC16B4249DBE30004CE47E /* roleSex.strings */,
 			);
 			name = roleScript;
 			sourceTree = "<group>";
@@ -197,6 +206,7 @@
 			files = (
 				5EB7391E2473D6710047B7BE /* click.mp3 in Resources */,
 				5EB7390E2473766F0047B7BE /* rolePick.sks in Resources */,
+				5EBC16B5249DBE30004CE47E /* roleSex.strings in Resources */,
 				5EB7391D2473D6710047B7BE /* flip.mp3 in Resources */,
 				5E6B00F52472805E00653DC0 /* Main.storyboard in Resources */,
 				5EB739222473E8A60047B7BE /* roleIntroduction.strings in Resources */,
@@ -245,6 +255,8 @@
 				5E6B00F22472805E00653DC0 /* GameSettingVC.swift in Sources */,
 				5EB73910247377EF0047B7BE /* rolePick.swift in Sources */,
 				5EB4CDF52476191E0013D198 /* Events.swift in Sources */,
+				5EBC16B7249DCCBA004CE47E /* shareParam.swift in Sources */,
+				5EBC16B3249DBC9A004CE47E /* config.swift in Sources */,
 				5E6B00EA2472805E00653DC0 /* AppDelegate.swift in Sources */,
 				5EB7391A2473B71A0047B7BE /* soundManager.swift in Sources */,
 			);

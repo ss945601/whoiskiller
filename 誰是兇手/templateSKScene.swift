@@ -23,135 +23,156 @@ public struct Queue<T> {
     }
     public mutating func dequeue() -> T? {
         if isEmpty {
-           return nil
+            return nil
         } else {
-           return array.removeFirst()
+            return array.removeFirst()
         }
-     }
+    }
     public var front: T? {
         return array.first
     }
 }
 
 extension SKLabelNode {
-  func multilined() -> SKLabelNode {
-    let substrings: [String] = self.text!.components(separatedBy: "\n")
-    return substrings.enumerated().reduce(SKLabelNode()) {
-      let label = SKLabelNode(fontNamed: self.fontName)
-      label.text = $1.element
-      label.fontColor = self.fontColor
-      label.fontSize = self.fontSize
-      label.position = self.position
-      label.horizontalAlignmentMode = self.horizontalAlignmentMode
-      label.verticalAlignmentMode = self.verticalAlignmentMode
-        let y = CGFloat($1.offset - substrings.count / 2) * self.fontSize*1.62
-      label.position = CGPoint(x: 0, y: -y)
-      $0.addChild(label)
-      return $0
+    func multilined() -> SKLabelNode {
+        let substrings: [String] = self.text!.components(separatedBy: "\n")
+        return substrings.enumerated().reduce(SKLabelNode()) {
+            let label = SKLabelNode(fontNamed: self.fontName)
+            label.text = $1.element
+            label.fontColor = self.fontColor
+            label.fontSize = self.fontSize
+            label.position = self.position
+            label.horizontalAlignmentMode = self.horizontalAlignmentMode
+            label.verticalAlignmentMode = self.verticalAlignmentMode
+            let y = CGFloat($1.offset - substrings.count / 2) * self.fontSize*1.62
+            label.position = CGPoint(x: 0, y: -y)
+            $0.addChild(label)
+            return $0
+        }
     }
-  }
 }
 
 
 extension templateSKScene: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        let msg = message.body as! String
-        //processBuffer.enqueue(msg)
-        if msg.contains("人數"){
+        var msg = message.body as! String
+        processCommand(cmd: msg)
+    }
+    
+    func processCommand(cmd:String){
+        print(cmd)
+        var msg = ""
+        if cmd.contains("[CMD]"){
+            msg = String(cmd.split(separator: "]")[1])
+        }
+        else {
+            msg = cmd
+        }
+        if msg.contains("人數"){ // 取得連線人數
             let num = String(msg.split(separator: ":")[1])
             member = Int(num)!
             events.trigger(eventName: "member")
-        }
-        if msg.contains("加入遊戲"){
-            var name = msg.split(separator: "加")[0]
-            if !playersName.contains(String(name)) {
-                playersName.append(String(name))
+            print(status)
+            if status != "gameConnect" && member < limit_player{ // 突然斷線 回連線頁面
+                events.trigger(eventName: "startToWaitConnect")
             }
         }
-        if msg.contains("getPlayerAlive"){
+        if msg.contains("加入遊戲"){ // ID 確認加入
+            var name = msg.split(separator: "加")[0]
+            if !playersID.contains(String(name)) {
+                playersID.append(String(name))
+            }
+        }
+        if msg.contains("getPlayerAlive"){ // 回應ID是否連線中
             sendCmd(msg: UIDevice.current.name + "加入遊戲")
         }
-        if (member == limit_player){
-            events.trigger(eventName: "isLoadDone")
+        if msg.contains("startToRolePick"){ // 非房主等待房主指令跳頁
+            if (!isMaster) {
+                events.trigger(eventName: "startToRolePick")
+            }
         }
-        
-        print(msg)
     }
 }
 
 class templateSKScene: SKScene,WKNavigationDelegate {
     
-    var webView = WKWebView()
-    var isLoadDone = false
+    static var webView = WKWebView()
     var processBuffer = Queue<String>()
-    var playersName = Array<String>()
     let events = EventManager();
-    var member = 0
     var timer = Timer()
-
-    let limit_player = 2
-
+    
+    let limit_player = LIMIT_PLAYER_NUM
+    
     func addTemplate(){
-        addGoNextBtn()
         addBgImage()
     }
+
     
     func addSocket(){
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = WKUserContentController()
         configuration.userContentController.add(self, name: "ToApp")
-        self.webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.navigationDelegate = self
-        let url = URL(string: "https://whoiskiller.herokuapp.com/")!
+        templateSKScene.webView = WKWebView(frame: .zero, configuration: configuration)
+        templateSKScene.webView.navigationDelegate = self
+        let url = URL(string: DOMAIN_NAME)!
         let request = URLRequest(url: url)
-        webView.load(request)
+        templateSKScene.webView.load(request)
     }
     
+    
     func sendCmd(msg:String){
-        webView.evaluateJavaScript("sendCmd('"+msg+"')", completionHandler: { (value,error)in
+        templateSKScene.webView.evaluateJavaScript("sendCmd('"+"[CMD]"+msg+"')", completionHandler: { (value,error)in
             print(value as Any)
         })
     }
     
     @objc func getClientsNum(){
-        webView.evaluateJavaScript("getClientsNum()", completionHandler: { (value,error)in
+        templateSKScene.webView.evaluateJavaScript("getClientsNum()", completionHandler: { (value,error)in
             print(value as Any)
         })
     }
     
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        isLoadDone = true
         sendCmd(msg: UIDevice.current.name + "加入遊戲")
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(getClientsNum), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(getClientsNum), userInfo: nil, repeats: true)
     }
     
     func addGoBackBtn(){
-       let goBackBtn = SKSpriteNode(imageNamed: "goBack")
-       goBackBtn.position = CGPoint(x: self.frame.minX+100, y: self.frame.maxY-50)
-       goBackBtn.size = CGSize(width: goBackBtn.size.width/1.5,height: goBackBtn.size.height/1.5)
-       goBackBtn.name = "goBack"
-       self.addChild(goBackBtn)
-   }
-   
-   func addGoNextBtn(){
-       let goNextBtn = SKSpriteNode(imageNamed: "goNext")
-       goNextBtn.position = CGPoint(x: self.frame.maxX-100, y: self.frame.maxY-50)
-       goNextBtn.size = CGSize(width: goNextBtn.size.width/1.5,height: goNextBtn.size.height/1.5)
-       goNextBtn.name = "goNext"
-       self.addChild(goNextBtn)
-   }
-   
-
-   func addBgImage(){
-       let background = SKSpriteNode(imageNamed: "blood_bg")
-       background.size = frame.size
-       background.alpha = 0.5
-       background.position = CGPoint(x: frame.midX, y: frame.midY)
-       background.zPosition = -100
-       addChild(background)
-   }
+        let goBackBtn = SKSpriteNode(imageNamed: "goBack")
+        goBackBtn.position = CGPoint(x: self.frame.minX+100, y: self.frame.maxY-50)
+        goBackBtn.size = CGSize(width: goBackBtn.size.width/1.5,height: goBackBtn.size.height/1.5)
+        goBackBtn.name = "goBack"
+        self.addChild(goBackBtn)
+    }
     
+    func addGoNextBtn(){
+        let goNextBtn = SKSpriteNode(imageNamed: "goNext")
+        goNextBtn.position = CGPoint(x: self.frame.maxX-100, y: self.frame.maxY-50)
+        goNextBtn.size = CGSize(width: goNextBtn.size.width/1.5,height: goNextBtn.size.height/1.5)
+        goNextBtn.name = "goNext"
+        self.addChild(goNextBtn)
+    }
+    
+    
+    func addBgImage(){
+        let background = SKSpriteNode(imageNamed: "blood_bg")
+        background.size = frame.size
+        background.alpha = 0.5
+        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        background.zPosition = -100
+        addChild(background)
+    }
+    
+    func startToGameConnect(skView:SKView){
+        if let scene = GameConnectScene(fileNamed: "GameConnectScene") {
+            // Set the scale mode to scale to fit the window
+            scene.scaleMode = .aspectFill
+            status = "gameConnect"
+            let transition = SKTransition.moveIn(with: .right, duration: 0.5)
+            skView.presentScene(scene, transition: transition)
+        }
+    }
     
     func playSound(file:String){
         let sound = SKAction.playSoundFileNamed(file, waitForCompletion: false)

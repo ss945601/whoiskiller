@@ -15,9 +15,10 @@ class rolePick: templateSKScene {
     private var secondScene = SKSpriteNode()
     private var label : SKLabelNode?
     private var roles = ["錢貞多","吳昭音","田芊平","艾貼摩"]
-    private var playerName : [String: String] = [:]
+    private var playerID_Name : [String: String] = [:]
     private var storyNote = SKSpriteNode(imageNamed: "note")
-   
+    var isPickRole = false
+    var isYourTurn = false
     override func didMove(to view: SKView) {
         secondScene.size = self.size
         secondScene.zPosition = 10
@@ -26,18 +27,23 @@ class rolePick: templateSKScene {
         self.label = self.childNode(withName: "//Title_role_lb") as? SKLabelNode
         addTemplate()
         addRoleBtn()
+
     }
     
     func addRoleBtn(){
-        addRoleWithName(name: roles[0]+"(男)",pos:CGPoint(x: frame.midX, y: frame.maxY-500) )
-        addRoleWithName(name: roles[1]+"(女)",pos:CGPoint(x: frame.midX, y: frame.maxY-700) )
-        addRoleWithName(name: roles[2]+"(女)",pos:CGPoint(x: frame.midX, y: frame.maxY-900) )
-        addRoleWithName(name: roles[3]+"(男)",pos:CGPoint(x: frame.midX, y: frame.maxY-1100) )
+       
+        if let url = Bundle.main.url(forResource: "roleSex", withExtension: "strings"),
+            let sex = NSDictionary(contentsOf: url) as? [String: String] {
+            addRoleWithName(name: roles[0]+sex[String(roles[0])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-500) )
+            addRoleWithName(name: roles[1]+sex[String(roles[1])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-700) )
+            addRoleWithName(name: roles[2]+sex[String(roles[2])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-900) )
+            addRoleWithName(name: roles[3]+sex[String(roles[3])]!,pos:CGPoint(x: frame.midX, y: frame.maxY-1100) )
+        }
         
     }
     
     
-
+    
     func addRoleWithName( name:String, pos:CGPoint){
         let role = SKLabelNode(text: name)
         for r in roles{
@@ -45,7 +51,7 @@ class rolePick: templateSKScene {
                 role.name = r
             }
         }
-    
+        
         role.fontColor = UIColor.red
         role.fontSize = 60
         role.alpha = 0.8
@@ -61,20 +67,29 @@ class rolePick: templateSKScene {
     }
     
     
-
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: self)
             let nodesarray = nodes(at: location)
-            
             for node in nodesarray {
-                for r in roles{
-                    if node.name == r && secondScene.children.count == 0 && node.children.first?.alpha != 1{
-                        node.alpha = 0.5
-                        node.children.first?.alpha = 1
-                        playSound(file: "click.mp3")
-                        showStory(role: r)
+                if (isMaster) {
+                   isYourTurn = true
+                }
+                if (!isPickRole && isYourTurn) {
+                    for r in roles{
+                        if node.name == r && secondScene.children.count == 0 && node.children.first?.alpha != 1{
+                            node.alpha = 0.5
+                            node.children.first?.alpha = 1
+                            playSound(file: "click.mp3")
+                            showStory(role: r)
+                            playerID_Name[UIDevice.current.name] = r
+                            isPickRole = true
+                            var idx = shareParam.getIndexByName(pid: UIDevice.current.name)
+                            if idx != -1 {
+                                sendCmd(msg:"pickRole:"+String(idx)+"_"+r)
+                            }
+                        }
                     }
                 }
                 if node.name == "note_cancel" {
@@ -83,6 +98,7 @@ class rolePick: templateSKScene {
                     tmp?.removeFromParent()
                     playSound(file: "click.mp3")
                 }
+                
             }
         }
     }
