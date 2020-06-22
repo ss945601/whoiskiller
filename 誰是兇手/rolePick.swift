@@ -8,7 +8,7 @@
 
 import SpriteKit
 import GameplayKit
-
+import AVKit
 
 
 class rolePick: templateSKScene {
@@ -18,7 +18,18 @@ class rolePick: templateSKScene {
     private var storyNote = SKSpriteNode(imageNamed: "note")
     var isPickRole = false
     var isYourTurn = false
+    var videoNode = SKVideoNode()
+    var timerVideo = Timer()
     override func didMove(to view: SKView) {
+        self.label = self.childNode(withName: "//Title_role_lb") as? SKLabelNode
+        self.label?.isHidden = true
+        addOpeningMovie()
+    }
+    
+    @objc func checkVideo(){
+        videoNode.removeFromParent()
+        timerVideo.invalidate()
+        self.label?.isHidden = false
         secondScene.size = self.size
         secondScene.zPosition = 10
         addChild(secondScene)
@@ -26,7 +37,27 @@ class rolePick: templateSKScene {
         self.label = self.childNode(withName: "//Title_role_lb") as? SKLabelNode
         addTemplate()
         addRoleBtn()
+        updateWhoPickRole()
         events.listenTo(eventName: "selectByOtherPlayer", action: selectByOtherPlayer)
+    }
+    
+    func addOpeningMovie(){
+        if let urlStr = Bundle.main.path(forResource: "op", ofType: "mp4")
+        {
+            let url = NSURL(fileURLWithPath: urlStr)
+            print(url)
+            let player = AVPlayer(url: url as URL)
+
+            videoNode = SKVideoNode(avPlayer: player)
+            videoNode.name = "op" // 103 sec
+            videoNode.position = CGPoint(x: 0, y: 0)
+            videoNode.size = CGSize(width: self.size.height, height: self.size.width)
+            videoNode.zPosition = 12
+            videoNode.zRotation = CGFloat(-Double.pi) * 90 / 180
+            addChild(videoNode)
+            videoNode.play()
+            timerVideo = Timer.scheduledTimer(timeInterval: 103, target: self, selector: #selector(checkVideo), userInfo: nil, repeats: false)
+        }
     }
     
     func addRoleBtn(){
@@ -65,6 +96,23 @@ class rolePick: templateSKScene {
         
     }
     
+    func updateWhoPickRole(){
+        var nowPickIdx = 0;
+        nowPickIdx = playerID_Name.count
+        self.label!.removeAllChildren()
+        if (nowPickIdx < LIMIT_PLAYER_NUM) {
+            let player = SKLabelNode(text: playersID[nowPickIdx]+"-請選擇")
+            player.fontColor = UIColor.lightGray
+            player.fontSize = 60
+            player.alpha = 0
+            player.fontName = "SetoFont"
+            player.zPosition = 3
+            self.label!.addChild(player)
+            player.position = CGPoint(x: player.position.x,y: player.position.y-170)
+            player.alpha = 1
+        }
+    }
+    
     func selectByOtherPlayer(information:Any?){
         let idx =  Int((information as! String).split(separator: "_")[0])
         let role =  String((information as! String).split(separator: "_")[1])
@@ -88,7 +136,7 @@ class rolePick: templateSKScene {
                 isYourTurn = true
             }
         }
-        
+        updateWhoPickRole()
        
     }
     

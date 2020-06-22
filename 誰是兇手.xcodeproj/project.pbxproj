@@ -15,6 +15,7 @@
 		5E6B00F52472805E00653DC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E6B00F32472805E00653DC0 /* Main.storyboard */; };
 		5E6B00F72472806200653DC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E6B00F62472806200653DC0 /* Assets.xcassets */; };
 		5E6B00FA2472806200653DC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E6B00F82472806200653DC0 /* LaunchScreen.storyboard */; };
+		5E702FDB24A0AADD00F7548D /* op.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5E702FDA24A0AADD00F7548D /* op.mp4 */; };
 		5EB4CDF52476191E0013D198 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4CDF42476191E0013D198 /* Events.swift */; };
 		5EB7390E2473766F0047B7BE /* rolePick.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5EB7390D2473766F0047B7BE /* rolePick.sks */; };
 		5EB73910247377EF0047B7BE /* rolePick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB7390F247377EF0047B7BE /* rolePick.swift */; };
@@ -44,6 +45,7 @@
 		5E6B00F62472806200653DC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E6B00F92472806200653DC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E6B00FB2472806200653DC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5E702FDA24A0AADD00F7548D /* op.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = op.mp4; sourceTree = "<group>"; };
 		5EB4CDF42476191E0013D198 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5EB7390D2473766F0047B7BE /* rolePick.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rolePick.sks; sourceTree = "<group>"; };
 		5EB7390F247377EF0047B7BE /* rolePick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rolePick.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			children = (
 				5EBC16BA249DE968004CE47E /* font */,
 				5EB7391C2473D6710047B7BE /* click.mp3 */,
+				5E702FDA24A0AADD00F7548D /* op.mp4 */,
 				5EB7391B2473D6710047B7BE /* flip.mp3 */,
 				5EB739172473B52B0047B7BE /* bgm.mp3 */,
 			);
@@ -229,6 +232,7 @@
 				5EBC16C2249DF0A9004CE47E /* SetoFont.ttf in Resources */,
 				5EBC16B5249DBE30004CE47E /* roleSex.strings in Resources */,
 				5EB7391D2473D6710047B7BE /* flip.mp3 in Resources */,
+				5E702FDB24A0AADD00F7548D /* op.mp4 in Resources */,
 				5E6B00F52472805E00653DC0 /* Main.storyboard in Resources */,
 				5EB739222473E8A60047B7BE /* roleIntroduction.strings in Resources */,
 				5EBC16C0249DEFA1004CE47E /* cute.ttf in Resources */,
